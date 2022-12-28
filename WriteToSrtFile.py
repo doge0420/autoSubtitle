@@ -1,5 +1,6 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import TextIO
+
 
 def __format_time_list(timestamps : list):
     """
@@ -60,25 +61,34 @@ def count_list(lst : list):
     return sum(map(len, lst))
 
 def create_sub_groups(words : list, timestamps : list):
+    # final = []
+    # group_w = []
+    # group_t = []
+    
+    # for i, word in enumerate(words):
+    #     count = count_list(group_w)
+    #     if count <= 25:
+    #         group_w.append(word)
+    #         group_t.append(timestamps[i])
+    #     else:
+    #         final.append((group_w, [min(group_t), max(group_t)]))
+    #         group_w = []
+    #         group_t = []
+    #         group_w.append(word)
+    #         group_t.append(timestamps[i])
+
+    # final.append((group_w, [min(group_t), max(group_t)]))
+    
+    # return final
+    
     final = []
     group_w = []
     group_t = []
+    delta_list = [map(lambda x, i: x[i+1] - x[i], timestamps, range(len(timestamps)-1))]
     
-    for i, word in enumerate(words):
-        count = count_list(group_w)
-        if count <= 20:
-            group_w.append(word)
-            group_t.append(timestamps[i])
-        else:
-            final.append((group_w, [min(group_t), max(group_t)]))
-            group_w = []
-            group_t = []
-            group_w.append(word)
-            group_t.append(timestamps[i])
-
-    final.append((group_w, [min(group_t), max(group_t)]))
-    
-    return final
+    while True:
+        for i, timestamp in enumerate(timestamps):
+            
 
 def writeToSrt(groups : list, srt_file : TextIO):
     """

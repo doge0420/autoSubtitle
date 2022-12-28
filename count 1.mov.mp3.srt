@@ -1,0 +1,152 @@
+1
+00:00:00,390 --> 00:00:01,50
+ Dans cette première vidéo
+
+2
+00:00:01,220 --> 00:00:03,80
+ de la série sur Heater
+
+3
+00:00:03,200 --> 00:00:03,200
+ Tools, tu vas apprendre
+
+4
+00:00:03,200 --> 00:00:03,200
+ à quoi sert la fonction
+
+5
+00:00:03,200 --> 00:00:03,240
+ count et comment l'util
+
+6
+00:00:06,0 --> 00:00:08,620
+iser. Heater Tools, c
+
+7
+00:00:08,620 --> 00:00:08,620
+'est un module natif à
+
+8
+00:00:08,620 --> 00:00:09,670
+ piton qui a plein de
+
+9
+00:00:09,670 --> 00:00:09,870
+ fonctions qui nous permett
+
+10
+00:00:10,280 --> 00:00:10,610
+ent de créer des idér
+
+11
+00:00:10,930 --> 00:00:11,850
+ateurs efficaces et rap
+
+12
+00:00:12,260 --> 00:00:13,830
+ides. Donc comme son nom
+
+13
+00:00:13,830 --> 00:00:14,300
+ l'indique, count, compte,
+
+14
+00:00:14,300 --> 00:00:15,640
+ et ça jusqu'à l'infini.
+
+15
+00:00:16,210 --> 00:00:17,200
+ Cette fonction va ac
+
+16
+00:00:17,300 --> 00:00:17,300
+cepter deux arguments
+
+17
+00:00:17,300 --> 00:00:19,560
+ optionnels. Le premier
+
+18
+00:00:20,850 --> 00:00:20,850
+ concerne le nombre de
+
+19
+00:00:21,830 --> 00:00:22,490
+ départ, sa valeur par
+
+20
+00:00:22,600 --> 00:00:24,80
+ défaut est 0. Et le deuxième,
+
+21
+00:00:24,870 --> 00:00:25,760
+ le pas, qui est étab
+
+22
+00:00:25,760 --> 00:00:27,160
+li à 1 par défaut. Je
+
+23
+00:00:27,160 --> 00:00:27,960
+ vais faire un programme
+
+24
+00:00:28,240 --> 00:00:29,640
+ qui compte de 10 à 0.
+
+25
+00:00:31,190 --> 00:00:31,520
+ Donc je commence le compt
+
+26
+00:00:31,520 --> 00:00:31,710
+eur à 10 et je mets le
+
+27
+00:00:31,710 --> 00:00:32,20
+ pas à moins 1, comme
+
+28
+00:00:32,190 --> 00:00:34,320
+ ça on compte à l'envers.
+
+29
+00:00:36,550 --> 00:00:36,940
+ Ensuite, je fais une
+
+30
+00:00:36,940 --> 00:00:37,880
+ boucle qui va afficher
+
+31
+00:00:37,880 --> 00:00:38,390
+ chaque valeur et je mets
+
+32
+00:00:38,390 --> 00:00:38,540
+ un break quand le i atte
+
+33
+00:00:39,20 --> 00:00:40,360
+int 0, parce que sinon
+
+34
+00:00:40,410 --> 00:00:40,460
+ le code va continuer
+
+35
+00:00:40,470 --> 00:00:42,440
+ jusqu'à l'infini. Si
+
+36
+00:00:42,440 --> 00:00:42,440
+ tu as trouvé cette vidéo
+
+37
+00:00:42,440 --> 00:00:42,440
+ utile, n'hésite pas à
+
+38
+00:00:42,440 --> 00:00:42,440
+ t'abonner pour plus.
+
