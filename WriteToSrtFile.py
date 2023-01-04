@@ -60,7 +60,7 @@ def unpack(result):
 def count_list(lst : list):
     return sum(map(len, lst))
 
-def create_sub_groups(words : list, timestamps : list):
+# def create_sub_groups(words : list, timestamps : list):
     # final = []
     # group_w = []
     # group_t = []
@@ -81,14 +81,14 @@ def create_sub_groups(words : list, timestamps : list):
     
     # return final
     
-    final = []
-    group_w = []
-    group_t = []
-    delta_list = [map(lambda x, i: x[i+1] - x[i], timestamps, range(len(timestamps)-1))]
     
-    while True:
-        for i, timestamp in enumerate(timestamps):
-            
+    # final = []
+    # group_w = []
+    # group_t = []
+    # delta_list = [map(lambda x, i: x[i+1] - x[i], timestamps, range(len(timestamps)-1))]
+    
+    # for i, timestamp in enumerate(timestamps):
+        
 
 def writeToSrt(groups : list, srt_file : TextIO):
     """
