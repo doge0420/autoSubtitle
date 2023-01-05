@@ -59,43 +59,46 @@ def clean_word_list(words : list, timestamps : list):
 #             temp_time = []
  
 #     if len(temp_time) > 0:
-#         final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
+        # final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
     
 #     return final
 
 def create_subtitles(words, timestamps):
-  # Initialize an empty list to store the subtitle groups
-  subtitles = []
+    # Initialize an empty list to store the subtitle groups
+    subtitles = []
 
-  # Initialize the start and end times for the current subtitle group
-  start_time = end_time = timestamps[0]
+    # Initialize the start and end times for the current subtitle group
+    start_time = end_time = timestamps[0]
 
-  # Initialize an empty string to store the current subtitle group
-  current_subtitle = ""
+    # Initialize an empty string to store the current subtitle group
+    current_subtitle = ""
 
-  # Loop through the words and timestamps
-  for i in range(len(words)):
-    # Append the current word to the current subtitle group
-    current_subtitle += words[i] + " "
+    # Loop through the words and timestamps
+    for i in range(len(words)):
+        # Append the current word to the current subtitle group
+        current_subtitle += words[i]
 
-    # Update the end time to the current timestamp
-    end_time = timestamps[i]
+        # Update the end time to the current timestamp
+        end_time = timestamps[i]
 
-    # If the current subtitle group is too long or the time difference between the start and end times is too great,
-    # store the current subtitle group in the list of subtitles and reset the current subtitle group and start/end times
-    if len(current_subtitle) > 30 or end_time - start_time > 1:
-      subtitles.append((start_time, end_time, current_subtitle.strip()))
-      current_subtitle = ""
-      start_time = end_time = timestamps[i]
+        # If the current subtitle group is too long or the time difference between the start and end times is too great,
+        # store the current subtitle group in the list of subtitles and reset the current subtitle group and start/end times
+        if len(current_subtitle) > 30 or end_time - start_time > 1:
+            if start_time == end_time:
+                end_time += 0.5
+            subtitles.append(([current_subtitle.strip()], [format_time_list(start_time), format_time_list(end_time)]))
+            current_subtitle = ""
+            start_time = end_time = timestamps[i]
 
-  # Add the final subtitle group to the list of subtitles
-  subtitles.append((start_time, end_time, current_subtitle.strip()))
+    if start_time == end_time:
+        end_time += 0.5
+    # Add the final subtitle group to the list of subtitles
+    subtitles.append(([current_subtitle.strip()], [format_time_list(start_time), format_time_list(end_time)]))
 
-  return subtitles
-
+    return subtitles
 
 
 word, time = clean_word_list(words, timestamps)
 # print(list(map(len, [word, time])))
 
-print(*create_subtitles(word, time))
+print(create_subtitles(word, time))

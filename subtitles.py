@@ -32,7 +32,7 @@ def transcibe(filename : str):
     print(device)
     model = whisper.load_model("small").to(device)
     modify_model(model)
-    result = model.transcribe(filename, language="fr")
+    result = model.transcribe(filename, language="fr", verbose=None)
     print(result["segments"])
     
     return result["segments"], filename

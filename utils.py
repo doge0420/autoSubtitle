@@ -34,6 +34,91 @@ def format_time_list(timestamps):
     
     else:
         return format_time(timestamps)
+    
+# pour rassembler les mots qui commencent pas par un espace
+def clean_word_list(words : list, timestamps : list):
+    """
+    The clean_word_list function takes a list of words and returns a new list with the 
+    words cleaned up. The function removes any leading or trailing whitespace, and combines 
+    any words that were separated by whitespace in the original string. For example, if we pass 
+    the string &quot;hello   there&quot; to this function it will return [&quot;hello&quot;, &quot;there&quot;].
+    
+    Parameters
+    ----------
+        words : list
+            Pass a list of words to the function
+    
+    Returns
+    -------
+    
+        A list of words with the first letter removed
+    """
+    word_list = []
+    timestamp = []
+    temp_timestamp = []
+    for i, word in enumerate(words):
+        if word[0] == " ":
+            word_list.append(word)
+            timestamp.append(timestamps[i])
+            if len(temp_timestamp) > 0:
+                timestamp[-1] = temp_timestamp[0]
+                temp_timestamp = []
+        else:
+            word_list[-1] += word
+            temp_timestamp.append(timestamps[i])
+            
+    return word_list, list(timestamp)
+
+def create_subtitles(words, timestamps):
+    """
+    The create_subtitles function takes in a list of words and timestamps, and returns a list of tuples.
+    Each tuple contains two lists: the first is the subtitle text, and the second is a list containing 
+    the start time (in seconds) and end time (in seconds) for that subtitle.
+    
+    Parameters
+    ----------
+        words
+            Store the words in the transcript
+        timestamps
+            Store the start and end times of each word in the subtitle
+    
+    Returns
+    -------
+    
+        A list of tuples
+    """
+    # Initialize an empty list to store the subtitle groups
+    subtitles = []
+
+    # Initialize the start and end times for the current subtitle group
+    start_time = end_time = timestamps[0]
+
+    # Initialize an empty string to store the current subtitle group
+    current_subtitle = ""
+
+    # Loop through the words and timestamps
+    for i in range(len(words)):
+        # Append the current word to the current subtitle group
+        current_subtitle += words[i]
+
+        # Update the end time to the current timestamp
+        end_time = timestamps[i]
+
+        # If the current subtitle group is too long or the time difference between the start and end times is too great,
+        # store the current subtitle group in the list of subtitles and reset the current subtitle group and start/end times
+        if len(current_subtitle) > 30 or end_time - start_time > 1:
+            if start_time == end_time:
+                end_time += 0.5
+            subtitles.append(([current_subtitle.strip()], [format_time_list(start_time), format_time_list(end_time)]))
+            current_subtitle = ""
+            start_time = end_time = timestamps[i]
+
+    if start_time == end_time:
+        end_time += 0.5
+    # Add the final subtitle group to the list of subtitles
+    subtitles.append(([current_subtitle.strip()], [format_time_list(start_time), format_time_list(end_time)]))
+
+    return subtitles
 
 def unpack(result):
     """
@@ -59,43 +144,31 @@ def unpack(result):
             for key, value in dicts.items():
                 words.append(value) if key == 'word' else timestamps.append(value)
 
-    print(words)
-    print(timestamps)
-
     return words, timestamps
 
 def count_list(lst : list):
     return sum(map(len, lst))
 
-def create_sub_groups(words : list, timestamps : list):
-    final = []
-    group_w = []
-    group_t = []
+# def create_sub_groups(words : list, timestamps : list):
+#     final = []
+#     group_w = []
+#     group_t = []
     
-    for i, word in enumerate(words):
-        count = count_list(group_w)
-        if count <= 25:
-            group_w.append(word)
-            group_t.append(timestamps[i])
-        else:
-            final.append((group_w, [min(group_t), max(group_t)]))
-            group_w = []
-            group_t = []
-            group_w.append(word)
-            group_t.append(timestamps[i])
+#     for i, word in enumerate(words):
+#         count = count_list(group_w)
+#         if count <= 25:
+#             group_w.append(word)
+#             group_t.append(timestamps[i])
+#         else:
+#             final.append((group_w, [min(group_t), max(group_t)]))
+#             group_w = []
+#             group_t = []
+#             group_w.append(word)
+#             group_t.append(timestamps[i])
 
-    final.append((group_w, [min(group_t), max(group_t)]))
+#     final.append((group_w, [min(group_t), max(group_t)]))
     
-    return final
-    
-    
-    # final = []
-    # group_w = []
-    # group_t = []
-    # delta_list = [map(lambda x, i: x[i+1] - x[i], timestamps, range(len(timestamps)-1))]
-    
-    # for i, timestamp in enumerate(timestamps):
-        
+#     return final    
 
 def writeToSrt(groups : list, srt_file : TextIO):
     """
@@ -145,5 +218,6 @@ def writeSrtFile(result, file : TextIO):
         The final result of the function is a list of tuples, where each tuple contains a list of words and a list of timestamps.
     """
     words, timestamps = unpack(result)
-    final = create_sub_groups(words, timestamps)
+    words, timestamps = clean_word_list(words, timestamps)
+    final = create_subtitles(words, timestamps)
     writeToSrt(final, file)
