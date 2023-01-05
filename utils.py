@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from typing import TextIO
 
 
-def __format_time_list(timestamps : list):
+def format_time_list(timestamps):
     """
     The __format_time_list function takes a list of timestamps and formats them into the format required by the srt file.
     The function returns a list of strings that are formatted in this way: HH:MM:SS,mmm
@@ -26,10 +26,14 @@ def __format_time_list(timestamps : list):
 
         return f"{hours:02d}:{minutes:02d}:{seconds:02d},{int(round(microseconds/1000))}"
 
-    for timestamp in timestamps:
-        temp.append(format_time(timestamp))
-        
-    return temp
+    if hasattr(timestamps, '__iter__'):
+        for timestamp in timestamps:
+            temp.append(format_time(timestamp))
+            
+        return temp
+    
+    else:
+        return format_time(timestamps)
 
 def unpack(result):
     """
@@ -55,31 +59,34 @@ def unpack(result):
             for key, value in dicts.items():
                 words.append(value) if key == 'word' else timestamps.append(value)
 
-    return words, __format_time_list(timestamps)
+    print(words)
+    print(timestamps)
+
+    return words, timestamps
 
 def count_list(lst : list):
     return sum(map(len, lst))
 
-# def create_sub_groups(words : list, timestamps : list):
-    # final = []
-    # group_w = []
-    # group_t = []
+def create_sub_groups(words : list, timestamps : list):
+    final = []
+    group_w = []
+    group_t = []
     
-    # for i, word in enumerate(words):
-    #     count = count_list(group_w)
-    #     if count <= 25:
-    #         group_w.append(word)
-    #         group_t.append(timestamps[i])
-    #     else:
-    #         final.append((group_w, [min(group_t), max(group_t)]))
-    #         group_w = []
-    #         group_t = []
-    #         group_w.append(word)
-    #         group_t.append(timestamps[i])
+    for i, word in enumerate(words):
+        count = count_list(group_w)
+        if count <= 25:
+            group_w.append(word)
+            group_t.append(timestamps[i])
+        else:
+            final.append((group_w, [min(group_t), max(group_t)]))
+            group_w = []
+            group_t = []
+            group_w.append(word)
+            group_t.append(timestamps[i])
 
-    # final.append((group_w, [min(group_t), max(group_t)]))
+    final.append((group_w, [min(group_t), max(group_t)]))
     
-    # return final
+    return final
     
     
     # final = []

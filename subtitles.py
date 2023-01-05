@@ -1,7 +1,6 @@
 import moviepy.editor, torch, whisper, os, sys
-from whisper.utils import write_srt
 from stable_whisper import modify_model
-from WriteToSrtFile import writeSrtFile
+from utils import writeSrtFile
 
 def audioExtract(filename : str) -> str:
     """
@@ -41,6 +40,7 @@ def transcibe(filename : str):
 def transcribeToSrt(result, filename):
     with open(filename + ".srt", "w", encoding="utf-8") as srt:
         writeSrtFile(result, file=srt)
+    
 
 if __name__ =="__main__":
     main_dir = os.getcwd()
