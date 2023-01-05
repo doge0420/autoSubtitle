@@ -40,30 +40,62 @@ def clean_word_list(words : list, timestamps : list):
     return word_list, list(timestamp)
 
 # return [wordlist, [start, end]]
-def create_groups(word : list, time : list):
-    final = []
-    temp_word = []
-    temp_time = []
-    delta_list = list(np.diff(time))
-    last_min_time = 0
+# def create_groups(word : list, time : list):
+#     final = []
+#     temp_word = []
+#     temp_time = []
+#     delta_list = list(np.diff(time))
+#     last_min_time = 0
     
-    for i, word in enumerate(word):
-        if count_list(word) <= 30 and delta_list[i] <= 1:
-            temp_word.append(word)
-            temp_time.append(time[i])
-        else:
-            print(temp_time)
-            final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
-            last_min_time = temp_time[0]
-            temp_word = []
-            temp_time = []
+#     for i, word in enumerate(word):
+#         if count_list(word) <= 30 and delta_list[i] <= 1:
+#             temp_word.append(word)
+#             temp_time.append(time[i])
+#         else:
+#             print(temp_time)
+#             final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
+#             last_min_time = temp_time[0]
+#             temp_word = []
+#             temp_time = []
  
-    if len(temp_time) > 0:
-        final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
+#     if len(temp_time) > 0:
+#         final.append((temp_word, [format_time_list(last_min_time), format_time_list(temp_time[-1])]))
     
-    return final
+#     return final
+
+def create_subtitles(words, timestamps):
+  # Initialize an empty list to store the subtitle groups
+  subtitles = []
+
+  # Initialize the start and end times for the current subtitle group
+  start_time = end_time = timestamps[0]
+
+  # Initialize an empty string to store the current subtitle group
+  current_subtitle = ""
+
+  # Loop through the words and timestamps
+  for i in range(len(words)):
+    # Append the current word to the current subtitle group
+    current_subtitle += words[i] + " "
+
+    # Update the end time to the current timestamp
+    end_time = timestamps[i]
+
+    # If the current subtitle group is too long or the time difference between the start and end times is too great,
+    # store the current subtitle group in the list of subtitles and reset the current subtitle group and start/end times
+    if len(current_subtitle) > 30 or end_time - start_time > 1:
+      subtitles.append((start_time, end_time, current_subtitle.strip()))
+      current_subtitle = ""
+      start_time = end_time = timestamps[i]
+
+  # Add the final subtitle group to the list of subtitles
+  subtitles.append((start_time, end_time, current_subtitle.strip()))
+
+  return subtitles
+
+
 
 word, time = clean_word_list(words, timestamps)
 # print(list(map(len, [word, time])))
 
-create_groups(word, time)
+print(*create_subtitles(word, time))
